@@ -10,11 +10,10 @@ const PORT = process.env.PORT;
 // NOTE Internal Modules
 const routes = require('./routes');
 
+// SECTION ---------------- Middleware --------------- SECTION //
+// NOTE Body Parser
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
-
-// NOTE Routes
-app.get('/', (req, res) => res.send('hello'));
 
 // NOTE API Routes
 app.use('/api/v1/users', routes.user);
