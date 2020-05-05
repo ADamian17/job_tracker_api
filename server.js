@@ -1,5 +1,4 @@
 const express = require('express');
-const exphbs = require('express-handlebars');
 const bodyParser = require('body-parser');
 const path = require('path');
 
@@ -16,7 +15,8 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
 // NOTE API Routes
+app.use('/api/v1/auth', routes.auth);
 app.use('/api/v1/users', routes.user);
 
-// NOTE Server
+// SECTION ----------------- Server -------------------- SECTION //
 app.listen(PORT, console.log(`server connected at port: ${PORT}`));
