@@ -71,6 +71,7 @@ const login = async (req, res) => {
           expiresIn: '2h',
         }
       );
+      console.log(signedJwt);
       return res.status(200).json({
         status: 200,
         message: 'Success',
@@ -99,8 +100,3 @@ module.exports = {
   login,
   logout,
 };
-
-// search for attributes
-// Project.findOne({ where: {title: 'aProject'} }).then(project => {
-//   // project will be the first entry of the Projects table with the title 'aProject' || null
-// })
