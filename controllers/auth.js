@@ -31,7 +31,6 @@ const createUser = async (req, res) => {
         requestedAt: new Date().toLocaleString(),
       });
   } catch (err) {
-    console.log(err);
     res.status(400).json({
       status: 400,
       message: 'Something went wrong. Please try again',

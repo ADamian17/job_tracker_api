@@ -5,8 +5,8 @@ const db = require('../models');
 const index = async (req, res) => {
   try {
     const users = await db.User.findAll();
+    console.log(users);
     if (users) {
-      console.log(users);
       res.json({
         status: 200,
         data: users,
