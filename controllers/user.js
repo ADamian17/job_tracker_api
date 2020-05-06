@@ -37,9 +37,31 @@ const profile = async (req, res) => {
   }
 };
 
-// const update = async (req, res) => {
-//   const user = await db.User.update({})
-// };
+// NOTE Update user
+const update = async (req, res) => {
+  const userId = req.user_id;
+  try {
+    const { first_name, last_name, email } = req.body;
+    console.log(first_name, last_name, email);
+
+    const user = await db.User.update(
+      { first_name: first_name, last_name: last_name, email: email },
+      { where: { user_id: userId } }
+    );
+
+    if (user) {
+      return res.status(201).json({
+        status: 201,
+        message: `Your user have being update it`,
+      });
+    }
+  } catch (err) {
+    return res.status(500).json({
+      status: 500,
+      message: 'Something went wrong. Please try again',
+    });
+  }
+};
 
 // NOTE delete user
 const destroy = async (req, res) => {
@@ -63,5 +85,6 @@ const destroy = async (req, res) => {
 module.exports = {
   index,
   profile,
+  update,
   destroy,
 };

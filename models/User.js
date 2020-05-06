@@ -27,4 +27,13 @@ const User = db.define(
   }
 );
 
+User.associte = (models) => {
+  User.hasOne(models.Profile, {
+    onDelete: 'CASCADE',
+  });
+  User.hasMany(models.Jobs, {
+    onDelete: 'CASCADE',
+  });
+};
+
 module.exports = User;

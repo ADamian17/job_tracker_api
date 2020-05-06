@@ -71,7 +71,6 @@ const login = async (req, res) => {
           expiresIn: '2h',
         }
       );
-      console.log(signedJwt);
       return res.status(200).json({
         status: 200,
         message: 'Success',
@@ -92,11 +91,7 @@ const login = async (req, res) => {
   }
 };
 
-// NOTE Logout
-const logout = (req, res) => {};
-
 module.exports = {
   createUser,
   login,
-  logout,
 };
