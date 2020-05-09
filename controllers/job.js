@@ -80,12 +80,31 @@ const createJob = async (req, res) => {
   }
 };
 
+// NOTE One job
+const showJob = async (req, res) => {
+  const jobId = req.params.id;
+  try {
+    const job = await db.Job.findOne({ where: { job_id: jobId } });
+    if (job) {
+      res.status(200).json({
+        status: 200,
+        data: job,
+      });
+    }
+  } catch (err) {
+    return res.status(500).json({
+      status: 500,
+      message: 'Something went wrong. Please try again',
+    });
+  }
+};
+
 // NOTE delete job
 const destroy = async (req, res) => {
   const jobId = req.params.id;
   try {
-    const user = await db.Job.destroy({ where: { job_id: jobId } });
-    if (user) {
+    const job = await db.Job.destroy({ where: { job_id: jobId } });
+    if (job) {
       return res.status(201).json({
         status: 201,
         message: 'success',
@@ -102,5 +121,6 @@ const destroy = async (req, res) => {
 module.exports = {
   index,
   createJob,
+  showJob,
   destroy,
 };
