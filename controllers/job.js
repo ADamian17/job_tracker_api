@@ -24,7 +24,6 @@ const index = async (req, res) => {
 // NOTE Create
 const createJob = async (req, res) => {
   const user_id = req.user_id;
-  // console.log(user_id);
   const {
     job_position,
     job_post_url,
@@ -81,7 +80,27 @@ const createJob = async (req, res) => {
   }
 };
 
+// NOTE delete job
+const destroy = async (req, res) => {
+  const jobId = req.params.id;
+  try {
+    const user = await db.Job.destroy({ where: { job_id: jobId } });
+    if (user) {
+      return res.status(201).json({
+        status: 201,
+        message: 'success',
+      });
+    }
+  } catch (err) {
+    return res.status(500).json({
+      status: 500,
+      message: 'Something went wrong. Please try again',
+    });
+  }
+};
+
 module.exports = {
   index,
   createJob,
+  destroy,
 };
