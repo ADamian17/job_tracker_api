@@ -23,7 +23,6 @@ const index = async (req, res) => {
 // NOTE Profile
 const profile = async (req, res) => {
   const user_id = req.user_id;
-  console.log(user_id);
   try {
     const user = await db.User.findOne({ where: { user_id: user_id } });
     if (user) {

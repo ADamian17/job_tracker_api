@@ -5,7 +5,7 @@ const jwt = require('jsonwebtoken');
 
 // NOTE create a user
 const createUser = async (req, res) => {
-  const { first_name, last_name, email } = req.body;
+  const { first_name, last_name, email, profession } = req.body;
   let password = req.body.password;
 
   if (!first_name || !last_name || !email || !password) {
@@ -24,6 +24,7 @@ const createUser = async (req, res) => {
       last_name,
       email,
       password,
+      profession,
     });
     if (user)
       return res.status(201).json({
@@ -32,6 +33,7 @@ const createUser = async (req, res) => {
         requestedAt: new Date().toLocaleString(),
       });
   } catch (err) {
+    console.log(err);
     res.status(400).json({
       status: 400,
       message: 'Something went wrong. Please try again',

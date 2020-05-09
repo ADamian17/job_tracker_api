@@ -10,15 +10,23 @@ const User = db.define(
     },
     first_name: {
       type: Sequelize.STRING,
+      allowNull: false,
     },
     last_name: {
       type: Sequelize.STRING,
+      allowNull: false,
     },
     email: {
       type: Sequelize.STRING,
+      allowNull: false,
     },
     password: {
       type: Sequelize.STRING,
+      allowNull: false,
+    },
+    profession: {
+      type: Sequelize.STRING,
+      allowNull: false,
     },
   },
   {
@@ -28,9 +36,6 @@ const User = db.define(
 );
 
 User.associte = (models) => {
-  User.hasOne(models.Profile, {
-    onDelete: 'CASCADE',
-  });
   User.hasMany(models.Jobs, {
     onDelete: 'CASCADE',
   });
