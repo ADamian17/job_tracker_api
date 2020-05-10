@@ -1,6 +1,6 @@
 const express = require('express');
 const bodyParser = require('body-parser');
-
+const cors = require('cors');
 const app = express();
 require('dotenv').config();
 const PORT = process.env.PORT;
@@ -9,6 +9,15 @@ const PORT = process.env.PORT;
 const routes = require('./routes');
 
 // SECTION ---------------- Middleware --------------- SECTION //
+// NOTE Cors
+const corsOption = {
+  origin: process.env.REACT_APP_URL,
+  credentials: true,
+  optionsSuccessStatus: 200,
+};
+
+app.use(cors(corsOption));
+
 // NOTE Body Parser
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
