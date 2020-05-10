@@ -35,16 +35,18 @@ const createJob = async (req, res) => {
     point_of_contact,
   } = req.body;
 
-  if (
-    !job_position ||
-    !job_post_url ||
-    !job_status ||
-    !company_name ||
-    !on_site ||
-    !phone_screen ||
-    !applied_date ||
-    !point_of_contact
-  ) {
+  const fields = [
+    job_position,
+    job_post_url,
+    job_status,
+    company_name,
+    on_site,
+    phone_screen,
+    applied_date,
+    point_of_contact,
+  ];
+
+  if (!fields) {
     return res.status(400).json({
       status: 400,
       message: 'Please complete all fields',
@@ -63,8 +65,8 @@ const createJob = async (req, res) => {
       point_of_contact,
       user_id_fk: user_id,
     });
+
     if (job) {
-      console.log(job);
       return res.status(200).json({
         status: 200,
         data: job,
@@ -72,7 +74,6 @@ const createJob = async (req, res) => {
       });
     }
   } catch (err) {
-    console.log(err);
     res.status(400).json({
       status: 400,
       message: 'Something went wrong. Please try again',
@@ -89,6 +90,68 @@ const showJob = async (req, res) => {
       res.status(200).json({
         status: 200,
         data: job,
+      });
+    }
+  } catch (err) {
+    return res.status(500).json({
+      status: 500,
+      message: 'Something went wrong. Please try again',
+    });
+  }
+};
+
+// NOTE Update job
+const updateJob = async (req, res) => {
+  const jobId = req.params.id;
+
+  const {
+    job_position,
+    job_post_url,
+    job_status,
+    company_name,
+    on_site,
+    phone_screen,
+    applied_date,
+    point_of_contact,
+  } = req.body;
+
+  const fields = [
+    job_position,
+    job_post_url,
+    job_status,
+    company_name,
+    on_site,
+    phone_screen,
+    applied_date,
+    point_of_contact,
+  ];
+
+  if (!fields) {
+    return res.status(400).json({
+      status: 400,
+      message: 'Please complete all fields',
+    });
+  }
+
+  try {
+    const job = await db.Job.update(
+      {
+        job_position: job_position,
+        job_post_url: job_post_url,
+        job_status: job_status,
+        company_name: company_name,
+        on_site: on_site,
+        phone_screen: phone_screen,
+        applied_date: applied_date,
+        point_of_contact: point_of_contact,
+      },
+      { where: { job_id: jobId } }
+    );
+
+    if (job) {
+      return res.status(201).json({
+        status: 201,
+        message: `Your job have being update it`,
       });
     }
   } catch (err) {
@@ -122,5 +185,6 @@ module.exports = {
   index,
   createJob,
   showJob,
+  updateJob,
   destroy,
 };

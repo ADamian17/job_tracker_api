@@ -39,10 +39,18 @@ const profile = async (req, res) => {
 // NOTE Update user
 const update = async (req, res) => {
   const userId = req.user_id;
-  try {
-    const { first_name, last_name, email } = req.body;
-    console.log(first_name, last_name, email);
+  const { first_name, last_name, email } = req.body;
 
+  const fields = [first_name, last_name, email];
+
+  if (!fields) {
+    return res.status(400).json({
+      status: 400,
+      message: 'Please complete all fields',
+    });
+  }
+
+  try {
     const user = await db.User.update(
       { first_name: first_name, last_name: last_name, email: email },
       { where: { user_id: userId } }
