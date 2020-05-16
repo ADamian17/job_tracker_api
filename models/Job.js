@@ -5,7 +5,9 @@ const Job = db.define(
   'job',
   {
     job_id: {
-      type: Sequelize.INTEGER(),
+      type: Sequelize.INTEGER,
+      autoIncrement: true,
+      allowNull: false,
       primaryKey: true,
     },
     job_position: {
@@ -33,7 +35,8 @@ const Job = db.define(
       allowNull: false,
     },
     applied_date: {
-      type: Sequelize.STRING,
+      type: Sequelize.DATE,
+      defaultValue: Sequelize.NOW,
       allowNull: false,
     },
     point_of_contact: {
