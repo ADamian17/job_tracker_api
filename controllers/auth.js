@@ -8,7 +8,9 @@ const createUser = async (req, res) => {
   const { first_name, last_name, email, profession } = req.body;
   let password = req.body.password;
 
-  if (!first_name || !last_name || !email || !password) {
+  const fields = [first_name, last_name, email, profession];
+
+  if (!fields) {
     return res.status(400).json({
       status: 400,
       message: 'Please complete all fields',
@@ -32,6 +34,7 @@ const createUser = async (req, res) => {
       requestedAt: new Date().toLocaleString(),
     });
   } catch (err) {
+    console.log(err);
     res.status(400).json({
       status: 400,
       message: 'Something went wrong. Please try again',
