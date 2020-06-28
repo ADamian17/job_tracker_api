@@ -11,7 +11,7 @@ const routes = require('./routes');
 // SECTION ---------------- Middleware --------------- SECTION //
 // NOTE Cors
 const corsOption = {
-  origin: [ process.env.REACT_APP_LOCAL_URL, process.env.REACT_APP_URL ],
+  origin: process.env.REACT_APP_URL,
   credentials: true,
   optionsSuccessStatus: 200,
 };
