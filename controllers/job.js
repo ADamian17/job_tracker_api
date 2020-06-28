@@ -46,12 +46,28 @@ const createJob = async (req, res) => {
     point_of_contact,
   ];
 
-  if (!fields) {
+  if ( !fields ) {
     return res.status(400).json({
       status: 400,
       message: 'Please complete all fields',
     });
   }
+
+  if (
+    job_position === '' || 
+    job_position === '' || 
+    job_post_url === '' || 
+    job_status === '' || 
+    company_name === '' || 
+    on_site === '' || 
+    phone_screen === '' || 
+    applied_date === '' || 
+    point_of_contact === '' ) {
+      return res.status(400).json({
+        status: 400,
+        message: 'Please complete all fields',
+      });
+    }
 
   try {
     const job = await db.Job.create({
