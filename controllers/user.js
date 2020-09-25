@@ -1,23 +1,23 @@
-const connection = require('../config/db.connection');
-const db = require('../models');
+// NOTE internal modules
+const { User, Job } = require('../models');
 
 // NOTE All users
 const index = async (req, res) => {
-  try {
-    const users = await db.User.findAll();
-    if (users) {
-      res.json({
-        status: 200,
-        data: users,
-        requestedAt: new Date().toLocaleString(),
-      });
+    try {
+        const users = await User.find({});
+
+        res.json({
+            status: 200,
+            data: users,
+            requestedAt: new Date().toLocaleString(),
+        });
+
+    } catch (err) {
+        return res.status(500).json({
+        status: 500,
+        message: 'Something went wrong! Please try again',
+        });
     }
-  } catch (err) {
-    return res.status(500).json({
-      status: 500,
-      message: 'Something went wrong! Please try again',
-    });
-  }
 };
 
 // NOTE Profile

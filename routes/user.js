@@ -1,11 +1,12 @@
 const express = require('express');
 const router = express.Router();
-const ctrl = require('../controllers');
+const { user } = require('../controllers');
 const authRequired = require('../middleware/authRequired');
 
-router.get('/', ctrl.user.index);
-router.get('/profile', authRequired, ctrl.user.profile);
-router.put('/update', authRequired, ctrl.user.update);
-router.delete('/delete', authRequired, ctrl.user.destroy);
+// IMPORTANT base route /api/v1/users
+router.get('/', user.index);
+router.get('/profile', authRequired, user.profile);
+router.put('/update', authRequired, user.update);
+router.delete('/delete', authRequired, user.destroy);
 
 module.exports = router;

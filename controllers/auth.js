@@ -3,7 +3,7 @@ const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 
 // NOTE internal modules
-const { User, Job } = require('../models');
+const { User } = require('../models');
 
 // NOTE create a user
 const createUser = async (req, res) => {
