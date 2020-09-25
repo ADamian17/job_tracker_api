@@ -33,7 +33,7 @@ const createUser = async (req, res) => {
         if( foundUser ) {
             return res.status(400).json({
                 status: 400,
-                message: 'Something went wrong! Please try again',
+                message: 'Something went wrong. Please try again',
             });
         }
 
@@ -69,47 +69,49 @@ const createUser = async (req, res) => {
 
 // NOTE login
 const login = async (req, res) => {
+
     const { email, password } = req.body;
+    const fields = [ email, password ];
+
     try {
-        if (!email || !password) {
-        return res.status(400).json({
-            status: 400,
-            message: 'Please enter you email and password',
-        });
+        if ( !fields && email === '' || password === '' ) {
+
+            return res.status(400).json({
+                status: 400,
+                message: 'Please enter you email and password',
+            });
         }
 
-        const user = await db.User.findOne({ where: { email: email } });
-        if (!user) {
-        return res.status(400).json({
-            status: 400,
-            message: 'Email or password is incorrect',
-        });
-        }
+        const user = await User.findOne({ email: email });
 
-        const checkPassword = await bcrypt.compare(password, user.password);
+        if ( !user ) {
+            return res.status(400).json({
+                status: 400,
+                message: 'Invalid User',
+            });
+        };
 
-        if (checkPassword) {
+        const checkPassword = await bcrypt.compare( password, user.password );
 
+        if ( checkPassword ) {
             const signedJwt = await jwt.sign(
                 {
-                _id: user.user_id,
+                    _id: user.user_id,
                 },
-                process.env.SUPER_SECRET_KEY,
+                    process.env.SUPER_SECRET_KEY,
                 {
-                // its good practice to have an expiration amount for jwt tokens.
-                expiresIn: '3h',
+                    expiresIn: '3h',
                 }
             );
 
             return res.status(200).json({
                 status: 200,
                 message: 'Success',
-                id: user.user_id,
                 signedJwt,
             });
         }
 
-    } catch (err) {
+    } catch ( err ) {
         res.status(400).json({
         status: 400,
         message: 'Something went wrong. Please try again',
