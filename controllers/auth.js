@@ -47,14 +47,16 @@ const createUser = async (req, res) => {
             last_name, 
             email,
             password, 
-            profession
+            profession,
+            role: 'user'
         }
 
-        await User.create(newUser);
+        const user = await User.create(newUser);
 
         return res.status(201).json({
             status: 201,
             message: 'Success',
+            data: user,
             requestedAt: new Date().toLocaleString(),
         });
 
@@ -96,7 +98,7 @@ const login = async (req, res) => {
         if ( checkPassword ) {
             const signedJwt = await jwt.sign(
                 {
-                    _id: user.user_id,
+                    _id: user._id,
                 },
                     process.env.SUPER_SECRET_KEY,
                 {
@@ -107,6 +109,7 @@ const login = async (req, res) => {
             return res.status(200).json({
                 status: 200,
                 message: 'Success',
+                id: user._id,
                 signedJwt,
             });
         }

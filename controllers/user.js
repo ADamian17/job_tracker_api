@@ -22,18 +22,23 @@ const index = async (req, res) => {
 
 // NOTE Profile
 const profile = async (req, res) => {
-  const user_id = req.user_id;
-  try {
-    const user = await db.User.findOne({ where: { user_id: user_id } });
-    if (user) {
-      res.status(200).json({ status: 200, data: user });
-    }
-  } catch (err) {
-    return res.status(500).json({
-      status: 500,
-      message: 'Something went wrong. Please try again',
-    });
-  }
+  const userId = req.user_id;
+
+    try {
+        const user = await (await User.findById( userId ))
+        .populate('Report')
+
+        res.status(200).json({ 
+            status: 200,
+            data: user 
+        });
+
+    } catch (err) {
+        return res.status(500).json({
+            status: 500,
+            message: 'Something went wrong. Please try again',
+        });
+    };
 };
 
 // NOTE Update user

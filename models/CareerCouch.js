@@ -1,6 +1,6 @@
 const mongoonse = require('mongoose');
 
-const userShema = new mongoonse.Schema({
+const careerCouchShema = new mongoonse.Schema({
 
     first_name: {
         type: String,
@@ -19,29 +19,21 @@ const userShema = new mongoonse.Schema({
         type: String,
         required: [true, 'Password is required'],
     },
-    profession: {
+    currentClass: {
         type: String,
-        required: [true, 'Profession is required'],
+        required: [true, 'Password is required'],
     },
     role: {
         type: String,
     },
-    jobs: [{
+    users: [{
         type: mongoonse.Schema.Types.ObjectId,
-        ref: 'Job'
+        ref: 'User'
     }],
-    reports: [{
-        type: mongoonse.Schema.Types.ObjectId,
-        ref: 'Report'
-    }],
-    career_coach: [{
-        type: mongoonse.Schema.Types.ObjectId,
-        ref: 'Couch'
-    }]
 }, {
     timestamps: true
 });
 
-const User = mongoonse.model( 'User', userShema);
+const CareerCouch = mongoonse.model( 'CareerCouch', careerCouchShema);
 
-module.exports = User;
+module.exports = CareerCouch;
