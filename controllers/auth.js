@@ -1,18 +1,25 @@
+// NOTE external modules
 const bcrypt = require('bcryptjs');
-const connection = require('../config/db.connection');
-const db = require('../models');
 const jwt = require('jsonwebtoken');
 
-require('dotenv').config();
+// NOTE internal modules
+const { User, Job } = require('../models');
 
 // NOTE create a user
 const createUser = async (req, res) => {
     const { first_name, last_name, email, profession } = req.body;
+
     let password = req.body.password;
 
-    const fields = [first_name, last_name, email, profession];
+    const fields = [ first_name, last_name, email, password, profession ];
 
-    if (!fields) {
+    if (!fields && 
+        first_name === '' || 
+        last_name === '' || 
+        email === '' || 
+        password === '' || 
+        profession === '' ) {
+
         return res.status(400).json({
         status: 400,
         message: 'Please complete all fields',
@@ -20,21 +27,37 @@ const createUser = async (req, res) => {
     }
 
     try {
+
+        const foundUser = await User.findOne({ email: email });
+
+        if( foundUser ) {
+            return res.status(400).json({
+                status: 400,
+                message: 'Something went wrong! Please try again',
+            });
+        }
+
         const salt = bcrypt.genSaltSync(10);
         const hash = bcrypt.hashSync(password, salt);
+
         password = hash;
-        const user = await db.User.create({
-        first_name,
-        last_name,
-        email,
-        password,
-        profession,
-        });
+
+        const newUser = {
+            first_name, 
+            last_name, 
+            email,
+            password, 
+            profession
+        }
+
+        await User.create(newUser);
+
         return res.status(201).json({
-        status: 201,
-        message: 'success',
-        requestedAt: new Date().toLocaleString(),
+            status: 201,
+            message: 'Success',
+            requestedAt: new Date().toLocaleString(),
         });
+
     } catch (err) {
         console.log(err);
         res.status(400).json({

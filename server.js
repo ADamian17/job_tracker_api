@@ -30,8 +30,8 @@ app.use( (req, res, next) => {
 
 // NOTE API Routes
 app.use('/api/v1/auth', routes.auth);
-app.use('/api/v1/users', routes.user);
-app.use('/api/v1/jobs', routes.job);
+// app.use('/api/v1/users', routes.user);
+// app.use('/api/v1/jobs', routes.job);
 
 // SECTION ----------------- Server -------------------- SECTION //
 app.listen( PORT, () => console.log(`server connected at http://localhost:${PORT}`)) ;

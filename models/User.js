@@ -1,46 +1,36 @@
-const Sequelize = require('sequelize');
-const db = require('../config/db.connection');
+const mongoonse = require('mongoose');
 
-const User = db.define(
-  'user',
-  {
-    user_id: {
-      type: Sequelize.INTEGER,
-      autoIncrement: true,
-      allowNull: false,
-      primaryKey: true,
-    },
+const userShema = new mongoonse.Schema({
+
     first_name: {
-      type: Sequelize.STRING,
-      allowNull: false,
+        type: String,
+        required: [ true, 'First Name is require'],
     },
     last_name: {
-      type: Sequelize.STRING,
-      allowNull: false,
+        type: String,
+        required: [ true, 'Last Name is require'],
     },
     email: {
-      type: Sequelize.STRING,
-      allowNull: false,
+        type: String,
+        required: [ true, 'email is require'],
+        unique: true
     },
     password: {
-      type: Sequelize.STRING,
-      allowNull: false,
+        type: String,
+        required: [true, 'Password is required'],
     },
     profession: {
-      type: Sequelize.STRING,
-      allowNull: false,
+        type: String,
+        required: [true, 'Profession is required'],
     },
-  },
-  {
-    tableName: 'user',
-    timestamps: false,
-  }
-);
+    jobs: {
+        type: mongoonse.Schema.Types.ObjectId,
+        ref: 'Job'
+    }
+}, {
+    timestamps: true
+});
 
-User.associte = (models) => {
-  User.hasMany(models.Jobs, {
-    onDelete: 'CASCADE',
-  });
-};
+const User = mongoonse.model( 'User', userShema);
 
 module.exports = User;
