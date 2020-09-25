@@ -5,43 +5,43 @@ const Job = db.define(
   'job',
   {
     job_id: {
-      type: Sequelize.INTEGER,
-      autoIncrement: true,
-      allowNull: false,
-      primaryKey: true,
+        type: Sequelize.INTEGER,
+        autoIncrement: true,
+        allowNull: false,
+        primaryKey: true,
     },
     job_position: {
-      type: Sequelize.STRING,
-      allowNull: false,
+        type: Sequelize.STRING,
+        allowNull: false,
     },
     job_post_url: {
-      type: Sequelize.STRING,
-      allowNull: false,
+        type: Sequelize.STRING,
+        allowNull: false,
     },
     job_status: {
-      type: Sequelize.STRING,
-      allowNull: false,
+        type: Sequelize.STRING,
+        allowNull: false,
     },
     company_name: {
-      type: Sequelize.STRING,
-      allowNull: false,
+        type: Sequelize.STRING,
+        allowNull: false,
     },
     on_site: {
-      type: Sequelize.STRING,
-      allowNull: false,
+        type: Sequelize.STRING,
+        allowNull: false,
     },
     phone_screen: {
-      type: Sequelize.STRING,
-      allowNull: false,
+        type: Sequelize.STRING,
+        allowNull: false,
     },
     applied_date: {
-      type: Sequelize.DATE,
-      defaultValue: Sequelize.NOW,
-      allowNull: false,
+        type: Sequelize.DATE,
+        defaultValue: Sequelize.NOW,
+        allowNull: false,
     },
     point_of_contact: {
-      type: Sequelize.STRING,
-      allowNull: false,
+        type: Sequelize.STRING,
+        allowNull: false,
     },
     user_id_fk: {
       type: Sequelize.INTEGER(),
@@ -53,9 +53,9 @@ const Job = db.define(
 );
 
 Job.associte = (models) => {
-  Job.belongsTo(models.User, {
-    onDelete: 'CASCADE',
-  });
+    Job.belongsTo(models.User, {
+        onDelete: 'CASCADE',
+    });
 };
 
 module.exports = Job;

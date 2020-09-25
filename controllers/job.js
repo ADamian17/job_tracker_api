@@ -16,10 +16,12 @@ const index = async (req, res) => {
   } catch (err) {
     return res.status(500).json({
       status: 500,
+      error: err,
       message: 'Something went wrong! Please try again',
     });
   }
 };
+
 
 // NOTE Create
 const createJob = async (req, res) => {
