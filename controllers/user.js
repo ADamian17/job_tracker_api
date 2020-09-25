@@ -1,5 +1,5 @@
 // NOTE internal modules
-const { User, Job } = require('../models');
+const { User } = require('../models');
 
 // NOTE All users
 const index = async (req, res) => {
