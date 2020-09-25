@@ -55,7 +55,7 @@ const createUser = async (req, res) => {
 
         return res.status(201).json({
             status: 201,
-            message: 'Success',
+            message: 'User created',
             data: user,
             requestedAt: new Date().toLocaleString(),
         });

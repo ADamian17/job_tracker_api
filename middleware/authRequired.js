@@ -6,7 +6,7 @@ module.exports = (req, res, next) => {
     if (typeof bearerHeader !== 'undefined') {
         const token = bearerHeader.split(' ')[1];
         let payload = jwt.verify(token, process.env.SUPER_SECRET_KEY /*change this*/);
-        console.log(payload);
+        // console.log(payload);
         req.user_id = payload._id; //set user id for routes to use
         next();
 
