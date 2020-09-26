@@ -47,8 +47,7 @@ const createUser = async (req, res) => {
             last_name, 
             email,
             password, 
-            profession,
-            role: 'user'
+            profession
         }
 
         const user = await User.create(newUser);

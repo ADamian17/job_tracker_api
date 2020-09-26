@@ -1,102 +1,80 @@
-const connection = require('../config/db.connection');
-const db = require('../models');
+// NOTE Models
+const { User, Job } = require('../models');
 
 // NOTE Index
 const index = async (req, res) => {
-  const user_id = req.user_id;
-  try {
-    const jobs = await db.Job.findAll({ where: { user_id_fk: user_id } });
-    if (jobs) {
-      res.json({
-        status: 200,
-        data: jobs,
-        requestedAt: new Date().toLocaleString(),
-      });
+    const user_id = req.user_id;
+
+    try {
+        const jobs = await Job.find({});
+
+        res.json({
+            status: 200,
+            data: jobs,
+            requestedAt: new Date().toLocaleString(),
+        });
+        
+    } catch (err) {
+        return res.status(500).json({
+            status: 500,
+            error: err,
+            message: 'Something went wrong! Please try again',
+        });
     }
-  } catch (err) {
-    return res.status(500).json({
-      status: 500,
-      error: err,
-      message: 'Something went wrong! Please try again',
-    });
-  }
 };
 
 
 // NOTE Create
 const createJob = async (req, res) => {
-  const user_id = req.user_id;
-  const {
-    job_position,
-    job_post_url,
-    job_status,
-    company_name,
-    on_site,
-    phone_screen,
-    applied_date,
-    point_of_contact,
-  } = req.body;
+    const userId = req.user_id;
+    // NOTE discontructed req.body
 
-  const fields = [
-    job_position,
-    job_post_url,
-    job_status,
-    company_name,
-    on_site,
-    phone_screen,
-    applied_date,
-    point_of_contact,
-  ];
+    const {
+        job_position,
+        job_post_url,
+        company_name,
+        point_of_contact,
+    } = req.body;
 
-  if ( !fields ) {
-    return res.status(400).json({
-      status: 400,
-      message: 'Please complete all fields',
-    });
-  }
+    const fields = [
+        job_position,
+        job_post_url,
+        company_name,
+        point_of_contact,
+    ];
 
-  if (
-    job_position === '' || 
-    job_position === '' || 
-    job_post_url === '' || 
-    job_status === '' || 
-    company_name === '' || 
-    on_site === '' || 
-    phone_screen === '' || 
-    applied_date === '' || 
-    point_of_contact === '' ) {
-      return res.status(400).json({
+    // NOTE fields validation
+    if ( !fields && 
+        job_position === '' || 
+        job_post_url === '' || 
+        company_name === '' || 
+        point_of_contact === '' ) {
+        return res.status(400).json({
+            status: 400,
+            message: 'Please complete all fields',
+        });
+    }
+
+    try {
+        const createdJob = await Job.create( req.body );
+
+        const foundUser = await User.findById( userId );
+        foundUser.jobs.push( createdJob );
+        await foundUser.save() 
+
+        res.status(200).json({
+            status: 200,
+            data: createJob,
+            requestedAt: new Date().toLocaleString(),
+        });
+
+    } catch (err) {
+        res.status(400).json({
         status: 400,
-        message: 'Please complete all fields',
-      });
+        error: err,
+        message: 'Something went wrong. Please try again',
+        });
     }
-
-  try {
-    const job = await db.Job.create({
-      job_position,
-      job_post_url,
-      job_status,
-      company_name,
-      on_site,
-      phone_screen,
-      applied_date,
-      point_of_contact,
-      user_id_fk: user_id,
-    });
-
-    if (job) {
-      return res.status(200).json({
-        status: 200,
-        data: job,
-        requestedAt: new Date().toLocaleString(),
-      });
-    }
-  } catch (err) {
-    res.status(400).json({
-      status: 400,
-      message: 'Something went wrong. Please try again',
-    });
-  }
 };
 
 // NOTE One job

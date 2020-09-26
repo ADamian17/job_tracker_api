@@ -23,7 +23,7 @@ mongoose.connection.on('disconneted', (error) => {
 
 module.exports = {
     User: require('./User'),
-    // Job: require('./Job'),
+    Job: require('./Job'),
     // Report: require('./Report'),
-    // CareerCouch: require('./CareerCouch'),
+    CareerCouch: require('./CareerCouch')
 };

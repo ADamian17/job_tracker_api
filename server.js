@@ -1,6 +1,7 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const cors = require('cors');
+const path = require('path');
 const app = express();
 
 require('dotenv').config();
@@ -19,6 +20,9 @@ const corsOption = {
 
 app.use(cors(corsOption));
 
+// NOTE public directory config
+app.use( express.static(path.join( __dirname, 'public')) );
+
 // NOTE Body Parser
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
@@ -31,7 +35,7 @@ app.use( (req, res, next) => {
 // NOTE API Routes
 app.use('/api/v1/auth', routes.auth);
 app.use('/api/v1/users', routes.user);
-// app.use('/api/v1/jobs', routes.job);
+app.use('/api/v1/jobs', routes.job);
 
 // SECTION ----------------- Server -------------------- SECTION //
-app.listen( PORT, () => console.log(`server connected at http://localhost:${PORT}`)) ;
+app.listen( PORT, () => console.log(`server connected at ${PORT}`)) ;

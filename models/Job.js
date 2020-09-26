@@ -1,61 +1,43 @@
-const Sequelize = require('sequelize');
-const db = require('../config/db.connection');
+const mongoonse = require('mongoose');
 
-const Job = db.define(
-  'job',
-  {
-    job_id: {
-        type: Sequelize.INTEGER,
-        autoIncrement: true,
-        allowNull: false,
-        primaryKey: true,
-    },
+const jobSchema = new mongoonse.Schema({
     job_position: {
-        type: Sequelize.STRING,
-        allowNull: false,
+        type: String,
+        required: [ true, 'Job Position is required']
     },
     job_post_url: {
-        type: Sequelize.STRING,
-        allowNull: false,
-    },
-    job_status: {
-        type: Sequelize.STRING,
-        allowNull: false,
+        type: String,
+        required: [ true, 'Job Post Url is required']
     },
     company_name: {
-        type: Sequelize.STRING,
-        allowNull: false,
-    },
-    on_site: {
-        type: Sequelize.STRING,
-        allowNull: false,
-    },
-    phone_screen: {
-        type: Sequelize.STRING,
-        allowNull: false,
-    },
-    applied_date: {
-        type: Sequelize.DATE,
-        defaultValue: Sequelize.NOW,
-        allowNull: false,
+        type: String,
+        required: [ true, 'Company Name is required']
     },
     point_of_contact: {
-        type: Sequelize.STRING,
-        allowNull: false,
+        type: String,
+        required: [ true, 'Company Name is required']
     },
-    user_id_fk: {
-      type: Sequelize.INTEGER(),
+    job_status: {
+        type: String,
+        default: 'applied'
     },
-  },
-  {
-    timestamps: false,
-  }
-);
+    on_site: {
+        type: String,
+        default: 'no'
+    },
+    phone_screen: {
+        type: String,
+        default: 'no'
+    },
+    applied_date: {
+        type: Date,
+        default: Date.now
+    },
+},
+{
+    timestamps: true,
+});   
 
-Job.associte = (models) => {
-    Job.belongsTo(models.User, {
-        onDelete: 'CASCADE',
-    });
-};
+const Job = mongoonse.model( 'Job', jobSchema );
 
 module.exports = Job;

@@ -25,6 +25,7 @@ const careerCouchShema = new mongoonse.Schema({
     },
     role: {
         type: String,
+        default: 'Career Couch'
     },
     users: [{
         type: mongoonse.Schema.Types.ObjectId,
