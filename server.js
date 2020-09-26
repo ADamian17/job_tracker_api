@@ -13,23 +13,23 @@ const routes = require('./routes');
 // SECTION ---------------- Middleware --------------- SECTION //
 // NOTE Cors
 const corsOption = {
-  origin: [ process.env.REACT_APP_URL, 'http://localhost:3000' ],
-  credentials: true,
-  optionsSuccessStatus: 200,
+    origin: [ process.env.REACT_APP_URL, 'http://localhost:3000' ],
+    credentials: true,
+    optionsSuccessStatus: 200,
 };
 
 app.use(cors(corsOption));
 
 // NOTE public directory config
-app.use( express.static(path.join( __dirname, 'public')) );
+app.use('/images', express.static( 'public') );
 
 // NOTE Body Parser
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
 app.use( (req, res, next) => {
-  console.log(`${req.method} ${req.originalUrl}`)
-  next() 
+    console.log(`${req.method} ${req.originalUrl}`)
+    next() 
 })
 
 // NOTE API Routes

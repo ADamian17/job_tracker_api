@@ -27,6 +27,9 @@ const userShema = new mongoonse.Schema({
         type: String,
         default: 'user'
     },
+    // profile_image: {
+    //     type: String,
+    // },
     jobs: [{
         type: mongoonse.Schema.Types.ObjectId,
         ref: 'Job'

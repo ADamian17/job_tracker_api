@@ -3,10 +3,10 @@ const { User, Job } = require('../models');
 
 // NOTE Index
 const index = async (req, res) => {
-    const user_id = req.user_id;
+    const userId = req.user_id;
 
     try {
-        const jobs = await Job.find({});
+        const jobs = await Job.find({ user_id: userId });
 
         res.json({
             status: 200,
@@ -56,7 +56,15 @@ const createJob = async (req, res) => {
     }
 
     try {
-        const createdJob = await Job.create( req.body );
+        const newJob = {
+            job_position,
+            job_post_url,
+            company_name,
+            point_of_contact,
+            user_id: userId
+        }
+        
+        const createdJob = await Job.create( newJob );
 
         const foundUser = await User.findById( userId );
         foundUser.jobs.push( createdJob );
