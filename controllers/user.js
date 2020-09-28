@@ -61,10 +61,11 @@ const update = async (req, res) => {
     }
 
     try {
-        const user = await User.findByIdAndUpdate( userId, req.body, { new: true });
+        const updatedUser = await User.findByIdAndUpdate( userId, req.body, { new: true });
 
         return res.status(200).json({
             status: 200,
+            data: updatedUser,
             message: `Your user have being update it`,
         });
       
