@@ -27,8 +27,8 @@ const index = async (req, res) => {
 // NOTE Create
 const createJob = async (req, res) => {
     const userId = req.user_id;
-    // NOTE discontructed req.body
 
+    // NOTE discontructed req.body
     const {
         job_position,
         job_post_url,
@@ -36,12 +36,7 @@ const createJob = async (req, res) => {
         point_of_contact,
     } = req.body;
 
-    const fields = [
-        job_position,
-        job_post_url,
-        company_name,
-        point_of_contact,
-    ];
+    const fields = Object.keys( req.body );
 
     // NOTE fields validation
     if ( !fields && 
