@@ -109,64 +109,51 @@ const showJob = async (req, res) => {
 
 // NOTE Update job
 const updateJob = async (req, res) => {
-  const jobId = req.params.id;
+    const jobId = req.params.id;
 
-  const {
-    job_position,
-    job_post_url,
-    job_status,
-    company_name,
-    on_site,
-    phone_screen,
-    applied_date,
-    point_of_contact,
-  } = req.body;
+    const {
+        job_position,
+        job_post_url,
+        job_status,
+        company_name,
+        on_site,
+        phone_screen,
+        point_of_contact,
+    } = req.body;
 
-  const fields = [
-    job_position,
-    job_post_url,
-    job_status,
-    company_name,
-    on_site,
-    phone_screen,
-    applied_date,
-    point_of_contact,
-  ];
+    const fields = Object.keys( req.body );
 
-  if (!fields) {
-    return res.status(400).json({
-      status: 400,
-      message: 'Please complete all fields',
-    });
-  }
+    if ( !fields &&  
+        job_position === '' ||
+        job_post_url === '' ||
+        job_status === '' ||
+        company_name === '' || 
+        on_site === '' ||
+        phone_screen === '' || 
+        point_of_contact === '' ) {
 
-  try {
-    const job = await db.Job.update(
-      {
-        job_position: job_position,
-        job_post_url: job_post_url,
-        job_status: job_status,
-        company_name: company_name,
-        on_site: on_site,
-        phone_screen: phone_screen,
-        applied_date: applied_date,
-        point_of_contact: point_of_contact,
-      },
-      { where: { job_id: jobId } }
-    );
-
-    if (job) {
-      return res.status(201).json({
-        status: 201,
-        message: `Your job have being update it`,
-      });
+        return res.status(400).json({
+            status: 400,
+            data: req.body,
+            message: 'Please complete all fields',
+        });
     }
-  } catch (err) {
-    return res.status(500).json({
-      status: 500,
-      message: 'Something went wrong. Please try again',
-    });
-  }
+
+    try {
+        const updatedJob = await Job.findByIdAndUpdate( jobId, req.body, { new: true } );
+
+        return res.status(201).json({
+            status: 201,
+            data: updatedJob,
+            message: `Your job have being update it`,
+        });
+
+    } catch (err) {
+        return res.status(500).json({
+        status: 500,
+        message: 'Something went wrong. Please try again',
+        });
+    }
 };
 
 // NOTE delete job
