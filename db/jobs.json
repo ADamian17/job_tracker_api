@@ -1,0 +1,30 @@
+[
+    {
+        "job_position": "Software Engineer",
+        "job_post_url": "https://www.compass.com/careers/?gh_jid=2226490",
+        "company_name": "Compass",
+        "point_of_contact": "company website",
+        "user_id": null 
+    },
+    {
+        "job_position": "front-end software engineer",
+        "job_post_url": "https://www.compass.com/careers/?gh_jid=2226490",
+        "company_name": "planted",
+        "point_of_contact": "indeed",
+        "user_id": null 
+    },
+    {
+        "job_position": "web developer",
+        "job_post_url": "https://www.compass.com/careers/?gh_jid=2226490",
+        "company_name": "apple",
+        "point_of_contact": "angellist",
+        "user_id": null 
+    },
+    {
+        "job_position": "software engineer",
+        "job_post_url": "https://www.compass.com/careers/?gh_jid=2226490",
+        "company_name": "Compass",
+        "point_of_contact": "glassdor",
+        "user_id": null 
+    }
+]

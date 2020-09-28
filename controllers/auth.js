@@ -37,8 +37,9 @@ const createUser = async (req, res) => {
             });
         }
 
-        const salt = bcrypt.genSaltSync(10);
-        const hash = bcrypt.hashSync(password, salt);
+        const salt = await bcrypt.genSaltSync(10);
+        const hash = await bcrypt.hashSync( password, salt );
+        console.log( hash )
 
         password = hash;
 

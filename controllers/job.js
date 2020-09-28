@@ -85,23 +85,26 @@ const createJob = async (req, res) => {
     }
 };
 
+
 // NOTE One job
 const showJob = async (req, res) => {
-  const jobId = req.params.id;
-  try {
-    const job = await db.Job.findOne({ where: { job_id: jobId } });
-    if (job) {
-      res.status(200).json({
-        status: 200,
-        data: job,
-      });
+    const jobId = req.params.id;
+    
+    try {
+
+        const job = await Job.findById( jobId );
+
+        return res.status(200).json({
+            status: 200,
+            data: job,
+        });
+
+    } catch (err) {
+        return res.status(500).json({
+        status: 500,
+        message: 'Something went wrong. Please try again',
+        });
     }
-  } catch (err) {
-    return res.status(500).json({
-      status: 500,
-      message: 'Something went wrong. Please try again',
-    });
-  }
 };
 
 // NOTE Update job
@@ -168,27 +171,35 @@ const updateJob = async (req, res) => {
 
 // NOTE delete job
 const destroy = async (req, res) => {
-  const jobId = req.params.id;
-  try {
-    const job = await db.Job.destroy({ where: { job_id: jobId } });
-    if (job) {
-      return res.status(201).json({
-        status: 201,
-        message: 'success',
-      });
+
+    const jobId = req.params.id;
+
+    try {
+
+        const deletedJob = await Job.findByIdAndDelete( jobId );
+
+        const foundUser = await User.findById( deletedJob.user_id );
+        foundUser.jobs.remove( deletedJob );
+        foundUser.save()
+
+        return res.status(201).json({
+            status: 201,
+            data: deletedJob,
+            message: 'success',
+        });
+        
+    } catch (err) {
+        return res.status(500).json({
+            status: 500,
+            message: 'Something went wrong. Please try again',
+        });
     }
-  } catch (err) {
-    return res.status(500).json({
-      status: 500,
-      message: 'Something went wrong. Please try again',
-    });
-  }
 };
 
 module.exports = {
-  index,
-  createJob,
-  showJob,
-  updateJob,
-  destroy,
+    index,
+    createJob,
+    showJob,
+    updateJob,
+    destroy,
 };
