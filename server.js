@@ -37,4 +37,4 @@ app.use('/api/v1/users', routes.user);
 app.use('/api/v1/jobs', routes.job);
 
 // SECTION ----------------- Server -------------------- //
-app.listen( PORT, () => console.log(`server connected at ${PORT}`)) ;
+app.listen( PORT, () => console.log(`server connected at ${PORT}`));
