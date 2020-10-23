@@ -1,96 +1,144 @@
+// NOTE external modules
 const bcrypt = require('bcryptjs');
-const connection = require('../config/db.connection');
-const db = require('../models');
 const jwt = require('jsonwebtoken');
 
-require('dotenv').config();
+// NOTE internal modules
+const { User } = require('../models');
 
 // NOTE create a user
 const createUser = async (req, res) => {
+    
     const { first_name, last_name, email, profession } = req.body;
+
     let password = req.body.password;
 
-    const fields = [first_name, last_name, email, profession];
-
-    if (!fields) {
-        return res.status(400).json({
-        status: 400,
-        message: 'Please complete all fields',
-        });
-    }
+    const fields = [ first_name, last_name, email, password, profession ];
 
     try {
-        const salt = bcrypt.genSaltSync(10);
-        const hash = bcrypt.hashSync(password, salt);
+
+        if (!fields && 
+            first_name === '' || 
+            last_name === '' || 
+            email === '' || 
+            password === '' || 
+            profession === '' ) {
+                throw 'emptyForm';
+            }
+
+        const foundUser = await User.findOne({ email: email });
+
+        if( foundUser ) {
+            return res.status(400).json({
+                status: 400,
+                message: 'Something went wrong. Please try again',
+            });
+        }
+
+        const salt = await bcrypt.genSaltSync(10);
+        const hash = await bcrypt.hashSync( password, salt );
         password = hash;
-        const user = await db.User.create({
-        first_name,
-        last_name,
-        email,
-        password,
-        profession,
-        });
+
+        const newUser = {
+            first_name, 
+            last_name, 
+            email,
+            password, 
+            profession
+        }
+
+        await User.create(newUser);
+
         return res.status(201).json({
-        status: 201,
-        message: 'success',
-        requestedAt: new Date().toLocaleString(),
+            status: 201,
+            message: 'User created',
+            requestedAt: new Date().toLocaleString(),
         });
-    } catch (err) {
-        console.log(err);
-        res.status(400).json({
-        status: 400,
-        message: 'Something went wrong. Please try again',
-        });
-    }
+
+    } catch ( err ) {
+
+        if ( err === 'emptyForm' ) {
+
+            return res.status(400).json({
+                status: 400,
+                message: 'Form can not be empty, Please complete all fields !',
+            });
+
+        } else {
+
+            res.status(400).json({
+                status: 400,
+                message: 'Email or password. Please try again.',
+            });
+
+        };
+
+    };
 };
 
 // NOTE login
 const login = async (req, res) => {
+
     const { email, password } = req.body;
+    const fields = [ email, password ];
+
     try {
-        if (!email || !password) {
-        return res.status(400).json({
-            status: 400,
-            message: 'Please enter you email and password',
-        });
+        
+        if ( !fields && email === '' || password === '' ) {
+            throw 'emptyForm';
         }
 
-        const user = await db.User.findOne({ where: { email: email } });
-        if (!user) {
-        return res.status(400).json({
-            status: 400,
-            message: 'Email or password is incorrect',
-        });
-        }
+        const user = await User.findOne({ email: email });
 
-        const checkPassword = await bcrypt.compare(password, user.password);
+        if ( !user ) {
+            throw 'invalidUser'
+        };
 
-        if (checkPassword) {
+        const checkPassword = await bcrypt.compare( password, user.password );
+
+        if ( checkPassword ) {
 
             const signedJwt = await jwt.sign(
                 {
-                _id: user.user_id,
+                    _id: user._id,
                 },
-                process.env.SUPER_SECRET_KEY,
+                    process.env.SUPER_SECRET_KEY,
                 {
-                // its good practice to have an expiration amount for jwt tokens.
-                expiresIn: '3h',
+                    expiresIn: '3h',
                 }
             );
 
             return res.status(200).json({
                 status: 200,
                 message: 'Success',
-                id: user.user_id,
+                id: user._id,
                 signedJwt,
             });
         }
 
-    } catch (err) {
-        res.status(400).json({
-        status: 400,
-        message: 'Something went wrong. Please try again',
-        });
+    } catch ( err ) {
+
+        if ( err === 'emptyForm' ) {
+
+            return res.status(400).json({
+                status: 400,
+                name: 'empty form',
+                message: 'Please enter you email and password, can not be empty.'
+            });
+
+        } else if ( err === 'invalidUser' ) {
+
+            return res.status(400).json({
+                status: 400,
+                name: 'invalid user',
+                message: `This user doesn't exist, Please try again.`
+            });
+
+        } else {
+            res.status(400).json({
+                status: 400,
+                message: 'Email or password. Please try again.',
+            });
+        }
     }
 };
 
