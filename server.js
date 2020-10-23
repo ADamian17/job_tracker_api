@@ -31,6 +31,10 @@ app.use( (req, res, next) => {
     next() 
 })
 
+app.get('', (req, res ) => {
+    res.send('<h1>track that job api</h1>')
+})
+
 // NOTE API Routes
 app.use('/api/v1/auth', routes.auth);
 app.use('/api/v1/users', routes.user);
