@@ -7,26 +7,23 @@ const { User } = require('../models');
 
 // NOTE create a user
 const createUser = async (req, res) => {
+    
     const { first_name, last_name, email, profession } = req.body;
 
     let password = req.body.password;
 
     const fields = [ first_name, last_name, email, password, profession ];
 
-    if (!fields && 
-        first_name === '' || 
-        last_name === '' || 
-        email === '' || 
-        password === '' || 
-        profession === '' ) {
-
-        return res.status(400).json({
-        status: 400,
-        message: 'Please complete all fields',
-        });
-    }
-
     try {
+
+        if (!fields && 
+            first_name === '' || 
+            last_name === '' || 
+            email === '' || 
+            password === '' || 
+            profession === '' ) {
+                throw 'emptyForm';
+            }
 
         const foundUser = await User.findOne({ email: email });
 
@@ -39,8 +36,6 @@ const createUser = async (req, res) => {
 
         const salt = await bcrypt.genSaltSync(10);
         const hash = await bcrypt.hashSync( password, salt );
-        console.log( hash )
-
         password = hash;
 
         const newUser = {
@@ -51,22 +46,33 @@ const createUser = async (req, res) => {
             profession
         }
 
-        const user = await User.create(newUser);
+        await User.create(newUser);
 
         return res.status(201).json({
             status: 201,
             message: 'User created',
-            data: user,
             requestedAt: new Date().toLocaleString(),
         });
 
-    } catch (err) {
-        console.log(err);
-        res.status(400).json({
-        status: 400,
-        message: 'Something went wrong. Please try again',
-        });
-    }
+    } catch ( err ) {
+
+        if ( err === 'emptyForm' ) {
+
+            return res.status(400).json({
+                status: 400,
+                message: 'Form can not be empty, Please complete all fields !',
+            });
+
+        } else {
+
+            res.status(400).json({
+                status: 400,
+                message: 'Email or password. Please try again.',
+            });
+
+        };
+
+    };
 };
 
 // NOTE login
@@ -76,26 +82,21 @@ const login = async (req, res) => {
     const fields = [ email, password ];
 
     try {
+        
         if ( !fields && email === '' || password === '' ) {
-
-            return res.status(400).json({
-                status: 400,
-                message: 'Please enter you email and password',
-            });
+            throw 'emptyForm';
         }
 
         const user = await User.findOne({ email: email });
 
         if ( !user ) {
-            return res.status(400).json({
-                status: 400,
-                message: 'Invalid User',
-            });
+            throw 'invalidUser'
         };
 
         const checkPassword = await bcrypt.compare( password, user.password );
 
         if ( checkPassword ) {
+
             const signedJwt = await jwt.sign(
                 {
                     _id: user._id,
@@ -115,10 +116,29 @@ const login = async (req, res) => {
         }
 
     } catch ( err ) {
-        res.status(400).json({
-        status: 400,
-        message: 'Something went wrong. Please try again',
-        });
+
+        if ( err === 'emptyForm' ) {
+
+            return res.status(400).json({
+                status: 400,
+                name: 'empty form',
+                message: 'Please enter you email and password, can not be empty.'
+            });
+
+        } else if ( err === 'invalidUser' ) {
+
+            return res.status(400).json({
+                status: 400,
+                name: 'invalid user',
+                message: `This user doesn't exist, Please try again.`
+            });
+
+        } else {
+            res.status(400).json({
+                status: 400,
+                message: 'Email or password. Please try again.',
+            });
+        }
     }
 };
 
