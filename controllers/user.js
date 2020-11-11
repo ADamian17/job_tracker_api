@@ -1,5 +1,5 @@
 // NOTE internal modules
-const { User } = require('../models');
+const { User, Job } = require('../models');
 
 // NOTE All users
 const index = async (req, res) => {
@@ -82,11 +82,14 @@ const destroy = async (req, res) => {
     const userId = req.user_id;
 
     try {
-        const user = await User.findByIdAndDelete( userId );
+        const deletedUser = await User.findByIdAndDelete( userId );
+
+        const deletedJobs = await Job.deleteMany( { user_id: userId } )
+        console.log(deletedJobs)
         
         return res.status(200).json({
             status: 200,
-            data: user,
+            data: deletedUser,
             message: 'success',
         });
 

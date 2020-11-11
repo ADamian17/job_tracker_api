@@ -103,7 +103,7 @@ const login = async (req, res) => {
                 },
                     process.env.SUPER_SECRET_KEY,
                 {
-                    expiresIn: '3h',
+                    expiresIn: '10h',
                 }
             );
 

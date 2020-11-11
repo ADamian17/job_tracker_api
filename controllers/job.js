@@ -14,7 +14,12 @@ const index = async (req, res) => {
             requestedAt: new Date().toLocaleString(),
         });
         
-    } catch (err) {
+    } catch ( err ) {
+
+        if (err === 'TokenExpiredError') {
+            console.log('hereeee')
+        }
+
         return res.status(500).json({
             status: 500,
             error: err,

@@ -1,20 +1,30 @@
 const jwt = require('jsonwebtoken');
 require('dotenv').config();
 
-module.exports = (req, res, next) => {
+module.exports = async (req, res, next) => {
+
     const bearerHeader = req.headers['authorization'];
-    if (typeof bearerHeader !== 'undefined') {
+    try {
+
+        if ( typeof bearerHeader === 'undefined' ) throw 'forbidden';
+
         const token = bearerHeader.split(' ')[1];
-        let payload = jwt.verify(token, process.env.SUPER_SECRET_KEY /*change this*/);
-        // console.log(payload);
-        req.user_id = payload._id; //set user id for routes to use
-        
-        // if (!payload) {
-        //     console.log(jwt.JsonWebTokenError);
-        // }
-        
+        let payload = jwt.verify( token, process.env.SUPER_SECRET_KEY );
+        req.user_id = payload ? payload._id : null; // set user id for routes to use
+
         next();
-    } else {
-        res.sendStatus(403);
+    } catch (error) {
+        if ( error === 'forbidden' ) {
+
+            res.sendStatus(403).json({
+                status: 403,
+                message: 'forbidden'
+            });
+        } else {
+            res.json(error)
+        }
     }
+
 };
+
+

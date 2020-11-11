@@ -13,6 +13,9 @@ const routes = require('./routes');
 // NOTE public directory config
 app.use('/images', express.static( 'public') );
 
+// http://localhost:3001/images/assets/female.avatar.png
+// http://localhost:3001/images/assets/male.avatar.png
+
 // NOTE Cors
 const corsOption = {
     origin: [ process.env.REACT_APP_URL, 'http://localhost:3000' ],

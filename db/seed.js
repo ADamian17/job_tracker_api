@@ -25,6 +25,7 @@ const seedDB = async () => {
         const createdUser = await User.create( newUser );
 
         const newJobs = jobs.map( job => {
+            
             if ( job.user_id === null ) {
                 job.user_id = createdUser._id
             }
