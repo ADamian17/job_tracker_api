@@ -1,0 +1,21 @@
+module.exports = (req, res, next) => {
+    const bearerHeader = req.headers['authorization'];
+    
+    if ( typeof bearerHeader === 'undefined' ) return res.status(403).json({
+        status: 403,
+        message: 'forbidden'
+    });
+
+    const token = bearerHeader.split(' ')[1];
+    let payload = jwt.verify( token, process.env.SUPER_SECRET_KEY, ( err, decode ) => {
+        if ( err ) return res.status(401).json({
+            status: 401,
+            ...err
+        });
+    });
+
+    req.user_id = payload; // set user id for routes to use
+
+    next();
+
+};

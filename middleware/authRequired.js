@@ -2,8 +2,8 @@ const jwt = require('jsonwebtoken');
 require('dotenv').config();
 
 module.exports = async (req, res, next) => {
-
     const bearerHeader = req.headers['authorization'];
+
     try {
 
         if ( typeof bearerHeader === 'undefined' ) throw 'forbidden';
@@ -13,6 +13,7 @@ module.exports = async (req, res, next) => {
         req.user_id = payload ? payload._id : null; // set user id for routes to use
 
         next();
+        
     } catch (error) {
         if ( error === 'forbidden' ) {
 
@@ -20,11 +21,13 @@ module.exports = async (req, res, next) => {
                 status: 403,
                 message: 'forbidden'
             });
-        } else {
-            res.json(error)
+        } else  {
+
+            res.status(401).json({
+                status: 401,
+                ...error
+            });
         }
     }
 
 };
-
-
