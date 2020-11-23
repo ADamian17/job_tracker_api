@@ -6,11 +6,11 @@ const index = async (req, res) => {
     const userId = req.user_id;
 
     try {
-        const jobs = await Job.find({ user_id: userId });
+        const foundUser = await User.findById(userId).populate('jobs');
 
         res.json({
             status: 200,
-            data: jobs,
+            jobs: foundUser.jobs,
             requestedAt: new Date().toLocaleString(),
         });
         

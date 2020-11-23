@@ -1,5 +1,6 @@
 // NOTE internal modules
 const { User, Job } = require('../models');
+const { populate } = require('../models/Job');
 
 // NOTE All users
 const index = async (req, res) => {
@@ -25,8 +26,8 @@ const profile = async (req, res) => {
   const userId = req.user_id;
 
     try {
-        const user = await (await User.findById( userId ))
-        .populate('Report')
+        const user = await User.findById( userId )
+        .populate('jobs')
 
         res.status(200).json({ 
             status: 200,
