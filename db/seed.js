@@ -9,20 +9,12 @@ const seedDB = async () => {
         
         await User.deleteMany({});
 
-        let password = user.password;
         const salt = await bcrypt.genSaltSync(10);
-        const hash = await bcrypt.hashSync( password, salt );
-        password = hash;
+        const hash = await bcrypt.hashSync( user.password, salt );
 
-        const newUser = {
-            first_name: user.first_name, 
-            last_name: user.last_name, 
-            email: user.email,
-            password: password, 
-            profession: user.profession
-        }
+        user.password = hash;
 
-        const createdUser = await User.create( newUser );
+        const createdUser = await User.create( user );
 
         const newJobs = jobs.map( job => {
             
@@ -35,11 +27,11 @@ const seedDB = async () => {
 
         await Job.deleteMany({})
 
-        for (let job of newJobs ) {
-        const creaatedJob = await Job.create( job )
+        for ( let job of newJobs ) {
+            const creaatedJob = await Job.create( job )
 
-        createdUser.jobs.push(creaatedJob)
-        await createdUser.save()
+            createdUser.jobs.push(creaatedJob)
+            await createdUser.save()
         }
 
         console.log( 'createdUser', createdUser );
@@ -48,7 +40,6 @@ const seedDB = async () => {
 
     } catch (error) {
         return console.log(error)
-        process.exit()
     }
 
 };
