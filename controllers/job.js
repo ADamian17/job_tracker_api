@@ -86,14 +86,20 @@ const showJob = async (req, res) => {
 
 // NOTE Update job
 const updateJob = async (req, res) => {
-
+    
     const jobId = req.params.id;
 
     try {
         const updatedJob = await Job.findByIdAndUpdate( 
             jobId,
-            req.body, 
-            { new: true } 
+            {
+                $set: {
+                    ...req.body,
+                },
+            },  
+            { 
+                new: true 
+            } 
         );
 
         return res.status(201).json({
