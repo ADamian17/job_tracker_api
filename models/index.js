@@ -6,9 +6,9 @@ const connectionStr = process.env.MONGODB_URI || "mongodb://localhost:27017/trac
 
 mongoose.connect( connectionStr, {
     useNewUrlParser: true,
-    useFindAndModify: true,
+    useUnifiedTopology: true,
     useCreateIndex: true,
-    useUnifiedTopology: true
+    useFindAndModify: false
 })
 .then(function () {
     console.log("Mongodb connected....");

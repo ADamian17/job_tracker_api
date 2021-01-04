@@ -7,7 +7,7 @@ const { authRequired, checkFormFields } = require('../middleware');
 router.get('/', authRequired, ctrl.job.index);
 router.post('/newjob', authRequired, checkFormFields, ctrl.job.createJob);
 router.get('/:id', authRequired, ctrl.job.showJob);
-router.put('/update/:id', authRequired, ctrl.job.updateJob);
+router.put('/update/:id', authRequired, checkFormFields, ctrl.job.updateJob);
 router.delete('/delete/:id', authRequired, ctrl.job.destroy);
 
 module.exports = router;
