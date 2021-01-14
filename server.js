@@ -30,13 +30,13 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
 app.use( (req, res, next) => {
-    console.log(`${req.method} ${req.originalUrl}`)
-    next() 
-})
+    console.log(`${req.method} ${req.originalUrl}`);
+    next(); 
+});
 
 app.get('', (req, res ) => {
-    res.send('<h1>track that job api</h1>')
-})
+    res.send('<h1>track that job api</h1>');
+});
 
 // NOTE API Routes
 app.use('/api/v1/auth', routes.auth);

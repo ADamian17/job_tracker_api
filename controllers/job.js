@@ -31,36 +31,13 @@ const index = async (req, res) => {
 
 // NOTE Create
 const createJob = async (req, res) => {
+
     const userId = req.user_id;
 
-    // NOTE discontructed req.body
-    const {
-        job_position,
-        job_post_url,
-        company_name,
-        point_of_contact,
-    } = req.body;
-
-    const fields = Object.keys( req.body );
-
-    // NOTE fields validation
-    if ( !fields && 
-        job_position === '' || 
-        job_post_url === '' || 
-        company_name === '' || 
-        point_of_contact === '' ) {
-        return res.status(400).json({
-            status: 400,
-            message: 'Please complete all fields',
-        });
-    }
-
     try {
+
         const newJob = {
-            job_position,
-            job_post_url,
-            company_name,
-            point_of_contact,
+            ...req.body,
             user_id: userId
         }
         
@@ -109,38 +86,21 @@ const showJob = async (req, res) => {
 
 // NOTE Update job
 const updateJob = async (req, res) => {
+    
     const jobId = req.params.id;
 
-    const {
-        job_position,
-        job_post_url,
-        job_status,
-        company_name,
-        on_site,
-        phone_screen,
-        point_of_contact,
-    } = req.body;
-
-    const fields = Object.keys( req.body );
-
-    if ( !fields &&  
-        job_position === '' ||
-        job_post_url === '' ||
-        job_status === '' ||
-        company_name === '' || 
-        on_site === '' ||
-        phone_screen === '' || 
-        point_of_contact === '' ) {
-
-        return res.status(400).json({
-            status: 400,
-            data: req.body,
-            message: 'Please complete all fields',
-        });
-    }
-
     try {
-        const updatedJob = await Job.findByIdAndUpdate( jobId, req.body, { new: true } );
+        const updatedJob = await Job.findByIdAndUpdate( 
+            jobId,
+            {
+                $set: {
+                    ...req.body,
+                },
+            },  
+            { 
+                new: true 
+            } 
+        );
 
         return res.status(201).json({
             status: 201,

@@ -34,7 +34,8 @@ const jobSchema = new mongoonse.Schema({
         default: Date.now
     },
     user_id: {
-        type: String,
+        type: mongoonse.Schema.Types.ObjectId,
+        ref: 'User',
         required: true
     },
 },
