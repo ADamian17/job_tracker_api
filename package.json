@@ -4,7 +4,6 @@
   "description": "This app will make the job searching easy for job seackers",
   "main": "server.js",
   "scripts": {
-    "start": "nodemon server.js",
     "dev": "nodemon server.js"
   },
   "author": "Adonis D Martin",
