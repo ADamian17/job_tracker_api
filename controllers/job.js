@@ -6,7 +6,7 @@ const index = async (req, res) => {
     const userId = req.user_id;
 
     try {
-        const jobs = await Job.find({ user_id: userId }).populate('user_id').sort('-createdAt');
+        const jobs = await Job.find({ user: userId }).populate('user_id').sort('-createdAt');
 
         res.json({
             status: 200,
@@ -35,13 +35,9 @@ const createJob = async (req, res) => {
     const userId = req.user_id;
 
     try {
-
-        const newJob = {
-            ...req.body,
-            user_id: userId
-        }
+        req.body.user = userId
         
-        const createdJob = await Job.create( newJob );
+        const createdJob = await Job.create( req.body );
 
         const foundUser = await User.findById( userId );
         foundUser.jobs.push( createdJob );

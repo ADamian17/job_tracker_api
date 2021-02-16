@@ -18,8 +18,8 @@ const seedDB = async () => {
 
         const newJobs = jobs.map( job => {
             
-            if ( job.user_id === null ) {
-                job.user_id = createdUser._id
+            if ( job.user === null ) {
+                job.user = createdUser._id
             }
             
             return job

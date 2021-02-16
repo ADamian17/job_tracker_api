@@ -33,7 +33,7 @@ const jobSchema = new mongoonse.Schema({
         type: Date,
         default: Date.now
     },
-    user_id: {
+    user: {
         type: mongoonse.Schema.Types.ObjectId,
         ref: 'User',
         required: true
