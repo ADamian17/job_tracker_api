@@ -6,7 +6,7 @@ const index = async (req, res) => {
     const userId = req.user_id;
 
     try {
-        const jobs = await Job.find({ user: userId }).populate('user_id').sort('-createdAt');
+        const jobs = await Job.find({ user: userId }).populate('user').sort('-createdAt');
 
         res.json({
             status: 200,
