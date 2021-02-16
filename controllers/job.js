@@ -121,7 +121,7 @@ const destroy = async (req, res) => {
 
         const deletedJob = await Job.findByIdAndDelete( jobId );
 
-        const foundUser = await User.findById( deletedJob.user_id );
+        const foundUser = await User.findById( deletedJob.user );
         foundUser.jobs.remove( deletedJob );
         foundUser.save()
 
