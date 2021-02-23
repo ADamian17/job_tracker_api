@@ -3,13 +3,38 @@ const { User, Job } = require('../models');
 
 // NOTE Index
 const index = async (req, res) => {
-    const userId = req.user_id;
-
+    
     try {
-        const jobs = await Job.find({ user: userId }).populate('user').sort('-createdAt');
+        const userId = req.user_id;
+
+        let jobs = null;
+        
+        // if the query exist then return filter jobs
+        if ( Object.keys(req.query).length !== 0 ) {
+            const query = req.query.job_status;
+
+            jobs = await Job.find(
+                { 
+                    user: userId, 
+                    job_status: { 
+                        $eq: query 
+                    }
+                } 
+            ).populate('user').sort('-createdAt');
+            
+            return res.json({
+                status: 200,
+                count: jobs.length,
+                jobs,
+                requestedAt: new Date().toLocaleString(),
+            });
+        }
+
+        jobs = await Job.find({ user: userId }).populate('user').sort('-createdAt');
 
         res.json({
             status: 200,
+            count: jobs.length,
             jobs,
             requestedAt: new Date().toLocaleString(),
         });
