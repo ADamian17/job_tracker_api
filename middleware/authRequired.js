@@ -8,7 +8,7 @@ module.exports = async (req, res, next) => {
 
         if ( typeof bearerHeader === 'undefined' ) throw 'forbidden';
 
-        const token = bearerHeader.split(' ')[1];
+        const token = bearerHeader.split('.')[1];
         let payload = jwt.verify( token, process.env.SUPER_SECRET_KEY );
         req.user_id = payload ? payload._id : null; // set user id for routes to use
 
