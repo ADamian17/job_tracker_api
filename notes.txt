@@ -14,7 +14,7 @@ module.exports = (req, res, next) => {
         });
     });
 
-    req.user_id = payload; // set user id for routes to use
+    req.user = payload; // set user id for routes to use
 
     next();
 
