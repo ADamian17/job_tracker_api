@@ -23,7 +23,7 @@ const index = async (req, res) => {
 
 // NOTE Profile
 const profile = async (req, res) => {
-  const userId = req.user_id;
+  const userId = req.user;
 
     try {
         const user = await User.findById( userId )
@@ -44,7 +44,7 @@ const profile = async (req, res) => {
 
 // NOTE Update user
 const update = async (req, res) => {
-    const userId = req.user_id;
+    const userId = req.user;
     const { first_name, last_name, email, profession } = req.body;
 
     const fields = [ first_name, last_name, email ];
@@ -80,7 +80,7 @@ const update = async (req, res) => {
 
 // NOTE delete user
 const destroy = async (req, res) => {
-    const userId = req.user_id;
+    const userId = req.user;
 
     try {
         const deletedUser = await User.findByIdAndDelete( userId );

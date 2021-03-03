@@ -1,13 +1,15 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const cors = require('cors');
-const app = express();
 
 require('dotenv').config();
 const PORT = process.env.PORT || 3001;
 
 // NOTE Internal Modules
 const routes = require('./routes');
+
+
+const app = express();
 
 // SECTION ---------------- Middleware --------------- //
 // NOTE public directory config

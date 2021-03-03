@@ -5,7 +5,7 @@ const { User, Job } = require('../models');
 const index = async (req, res) => {
     
     try {
-        const userId = req.user_id;
+        const userId = req.user;
 
         let jobs = null;
         
@@ -57,7 +57,7 @@ const index = async (req, res) => {
 // NOTE Create
 const createJob = async (req, res) => {
 
-    const userId = req.user_id;
+    const userId = req.user;
 
     try {
         req.body.user = userId
