@@ -29,7 +29,7 @@ const userShema = new mongoonse.Schema({
     },
     profile_image: {
         type: String,
-        default: 'https://s3-us-west-2.amazonaws.com/adawayfarer/c4e6e5.png'
+        default: 'https://adawayfarer.s3-us-west-2.amazonaws.com/profile_avatar.png'
     },
     jobs: [{
         type: mongoonse.Schema.Types.ObjectId,
