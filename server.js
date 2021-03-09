@@ -22,11 +22,7 @@ const LIMIT = rateLimit({
     message: 'Too many requests' 
 })
 
-/* SECTION ---------------- Middleware --------------- */
-
-/* NOTE Body Parser */
-app.use(express.urlencoded({ extended: true }));
-app.use(express.json());
+/* SECTION config */
 
 /* NOTE Cors */
 const corsOption = {
@@ -37,10 +33,16 @@ const corsOption = {
 
 app.use(cors(corsOption));
 
-/* use rate limiting */
+/* SECTION ---------------- Middleware --------------- */
+
+/* NOTE Body Parser */
+app.use(express.urlencoded({ extended: true }));
+app.use(express.json());
+
+/* NOTE use rate limiting */
 app.use( LIMIT );
 
-/* reset headers */
+/* NOTE reset headers */
 app.use(helmet());
 
 /* sanitize data coming in from req.body */
