@@ -86,7 +86,6 @@ const destroy = async (req, res) => {
         const deletedUser = await User.findByIdAndDelete( userId );
 
         const deletedJobs = await Job.deleteMany( { user_id: userId } )
-        console.log(deletedJobs)
         
         return res.status(200).json({
             status: 200,

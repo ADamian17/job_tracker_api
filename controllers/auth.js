@@ -25,7 +25,7 @@ const createUser = async (req, res) => {
                 throw 'emptyForm';
             }
 
-        const foundUser = await User.findOne({ email: email });
+        const foundUser = await User.findOne({ email });
 
         if( foundUser ) {
             return res.status(400).json({
@@ -87,7 +87,7 @@ const login = async (req, res) => {
             throw 'emptyForm';
         }
 
-        const user = await User.findOne({ email: email });
+        const user = await User.findOne({ email });
 
         if ( !user ) {
             throw 'invalidUser'
