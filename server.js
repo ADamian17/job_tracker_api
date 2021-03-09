@@ -1,9 +1,10 @@
 const express = require('express');
-const bodyParser = require('body-parser');
 const cors = require('cors');
 
 /* security */
 const rateLimit = require('express-rate-limit');
+const helmet = require('helmet');
+const mongoSanitize = require('express-mongo-sanitize');
 
 require('dotenv').config();
 const PORT = process.env.PORT || 3001;
@@ -27,9 +28,6 @@ const LIMIT = rateLimit({
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
-/* use rate limiting */
-app.use( LIMIT );
-
 /* NOTE Cors */
 const corsOption = {
     origin: [ process.env.REACT_APP_URL, 'http://localhost:3000' ],
@@ -38,6 +36,15 @@ const corsOption = {
 };
 
 app.use(cors(corsOption));
+
+/* use rate limiting */
+app.use( LIMIT );
+
+/* reset headers */
+app.use(helmet());
+
+/* sanitize data coming in from req.body */
+app.use(mongoSanitize());
 
 /* logger */
 app.use( (req, res, next) => {
