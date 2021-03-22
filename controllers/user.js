@@ -40,9 +40,17 @@ const update = async (req, res) => {
   }
 
   try {
-    const updatedUser = await User.findByIdAndUpdate(userId, req.body, {
-      new: true,
-    });
+    const updatedUser = await User.findByIdAndUpdate(
+      userId,
+      {
+        $set: {
+          ...req.body,
+        },
+      },
+      {
+        new: true,
+      }
+    );
 
     return res.status(200).json({
       status: 200,
@@ -50,6 +58,36 @@ const update = async (req, res) => {
       message: `Your user have being update it`,
     });
   } catch (err) {
+    return res.status(500).json({
+      status: 500,
+      message: "Something went wrong. Please try again",
+    });
+  }
+};
+
+const addImg = async ( req, res ) => {
+  const userId = req.user;
+  
+  try {
+    const updatedUser = await User.findByIdAndUpdate(
+      userId,
+      {
+        $set: {
+          profile_image: req.body.profile_image,
+        },
+      },
+      {
+        new: true,
+      }
+    );
+
+    return res.status(200).json({
+      status: 200,
+      updatedUser,
+      message: `Your user have being update it`,
+    });
+  } catch (error) {
+    console.log(error);
     return res.status(500).json({
       status: 500,
       message: "Something went wrong. Please try again",
@@ -82,5 +120,6 @@ const destroy = async (req, res) => {
 module.exports = {
   profile,
   update,
+  addImg,
   destroy,
 };
