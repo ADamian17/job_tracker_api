@@ -30,7 +30,6 @@ const corsOption = {
     process.env.REACT_APP_URL_2,
     'http://localhost:3000',
   ],
-  credentials: true,
   optionsSuccessStatus: 200,
 };
 
