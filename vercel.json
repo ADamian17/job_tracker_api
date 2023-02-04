@@ -6,19 +6,11 @@
       "use": "@vercel/node"
     }
   ],
-  "headers": [
+  "routes": [
     {
-      "source": "/api/(.*)",
-      "headers": [
-        {
-          "key": "Access-Control-Allow-Origin",
-          "value": "https://track-that-job.vercel.app/(.*)"
-        },
-        {
-          "key": "Access-Control-Allow-Methods",
-          "value": "GET,OPTIONS,PATCH,DELETE,POST,PUT"
-        }
-      ]
+      "src": "/(.*)",
+      "dest": "index.js",
+      "headers": { "access-control-allow-origin": "*" }
     }
   ]
 }
