@@ -12,7 +12,7 @@
       "headers": [
         {
           "key": "Access-Control-Allow-Origin",
-          "value": "https://track-that-job.vercel.app/"
+          "value": "https://track-that-job.vercel.app/(.*)"
         },
         {
           "key": "Access-Control-Allow-Methods",
