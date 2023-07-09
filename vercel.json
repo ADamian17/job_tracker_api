@@ -11,7 +11,7 @@
       "src": "/(.*)",
       "dest": "index.js",
       "headers": {
-        "access-control-allow-origin": "https://track-that-job.vercel.app/"
+        "access-control-allow-origin": "https://trackthatjob.com/"
       }
     }
   ]
