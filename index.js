@@ -25,13 +25,7 @@ const LIMIT = rateLimit({
 
 /* NOTE Cors */
 const corsOption = {
-  origin: [
-    process.env.REACT_APP_URL,
-    process.env.REACT_APP_URL_2,
-    'http://localhost:3000',
-    'http://localhost:3001',
-    'http://localhost:3002',
-  ],
+  origin: [process.env.REACT_APP_URL, 'http://localhost:3000'],
   optionsSuccessStatus: 200,
 };
 
