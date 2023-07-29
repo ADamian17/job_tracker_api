@@ -22,6 +22,7 @@ const LIMIT = rateLimit({
 });
 
 /* SECTION config */
+app.set('trust proxy', 'loopback');
 
 /* NOTE Cors */
 const corsOption = {
