@@ -126,7 +126,42 @@ const login = async (req, res) => {
   }
 };
 
+const validateToken = async (req, res) => {
+  try {
+    const bearerHeader = req.headers['authorization'];
+
+    if (typeof bearerHeader === 'undefined') throw 'forbidden';
+
+    const token = bearerHeader.split(' ')[1];
+    jwt.verify(token, process.env.SUPER_SECRET_KEY);
+
+    return res.status(200).json({
+      status: 200,
+    });
+  } catch (error) {
+    if (error === 'forbidden') {
+      return res.status(403).json({
+        status: 403,
+        message: 'forbidden',
+      });
+    }
+
+    if (error?.name === 'TokenExpiredError') {
+      return res.status(401).json({
+        status: 401,
+        ...error,
+      });
+    }
+
+    return res.status(500).json({
+      status: 500,
+      ...error,
+    });
+  }
+};
+
 module.exports = {
   createUser,
   login,
+  validateToken,
 };
