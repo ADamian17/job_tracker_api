@@ -26,7 +26,11 @@ app.set('trust proxy', 'loopback');
 
 /* NOTE Cors */
 const corsOption = {
-  origin: [process.env.REACT_APP_URL, 'http://localhost:3000'],
+  origin: [
+    process.env.REACT_APP_URL,
+    'http://localhost:3000',
+    'http://localhost:3002',
+  ],
   optionsSuccessStatus: 200,
 };
 
