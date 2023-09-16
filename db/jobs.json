@@ -12,7 +12,7 @@
     "company_name": "planted",
     "point_of_contact": "indeed",
     "user": null,
-    "job_status": "complete"
+    "job_status": "completed"
   },
   {
     "job_position": "web developer",
@@ -20,7 +20,7 @@
     "company_name": "apple",
     "point_of_contact": "angellist",
     "user": null,
-    "job_status": "complete"
+    "job_status": "completed"
   },
   {
     "job_position": "software engineer",
@@ -28,7 +28,7 @@
     "company_name": "Compass",
     "point_of_contact": "glassdor",
     "user": null,
-    "job_status": "complete"
+    "job_status": "completed"
   },
   {
     "job_position": "software engineer",

@@ -15,7 +15,7 @@ const profile = async (req, res) => {
 
     const complete = await Job.countDocuments({
       user: userId,
-      job_status: 'complete',
+      job_status: 'completed',
     });
 
     const in_progress = await Job.countDocuments({
