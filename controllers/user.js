@@ -35,23 +35,23 @@ const profile = async (req, res) => {
 
     const progress = [
       {
-        label: 'completed',
+        label: 'Completed',
         count: completed,
       },
       {
-        label: 'in_progress',
+        label: 'In progress',
         count: in_progress,
       },
       {
-        label: 'no_response',
+        label: 'No response',
         count: no_response,
       },
       {
-        label: 'rejected',
+        label: 'Rejected',
         count: rejected,
       },
       {
-        label: 'applied',
+        label: 'Applied',
         count: applied,
       },
     ];
