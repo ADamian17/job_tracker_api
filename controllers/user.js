@@ -1,21 +1,57 @@
 // NOTE internal modules
-const { User, Job } = require("../models");
+const { User, Job } = require('../models');
 
 // NOTE Profile
 const profile = async (req, res) => {
   const userId = req.user;
 
   try {
-    const user = await User.findById(userId).populate("jobs");
+    const user = await User.findById(userId);
+
+    const applied = await Job.countDocuments({
+      user: userId,
+      job_status: 'applied',
+    });
+
+    const complete = await Job.countDocuments({
+      user: userId,
+      job_status: 'complete',
+    });
+
+    const in_progress = await Job.countDocuments({
+      user: userId,
+      job_status: 'in_progress',
+    });
+
+    const rejected = await Job.countDocuments({
+      user: userId,
+      job_status: 'rejected',
+    });
+
+    const no_response = await Job.countDocuments({
+      user: userId,
+      job_status: 'no_response',
+    });
+
+    const progress = [
+      { complete },
+      { in_progress },
+      { no_response },
+      { rejected },
+      { applied },
+    ];
 
     res.status(200).json({
       status: 200,
-      data: user,
+      data: {
+        user,
+        progress,
+      },
     });
   } catch (err) {
     return res.status(500).json({
       status: 500,
-      message: "Something went wrong. Please try again",
+      message: 'Something went wrong. Please try again',
     });
   }
 };
@@ -28,14 +64,14 @@ const update = async (req, res) => {
   const fields = [first_name, last_name, email];
 
   if (
-    (!fields && first_name === "") ||
-    last_name === "" ||
-    email === "" ||
-    profession === ""
+    (!fields && first_name === '') ||
+    last_name === '' ||
+    email === '' ||
+    profession === ''
   ) {
     return res.status(400).json({
       status: 400,
-      message: "Please complete all fields",
+      message: 'Please complete all fields',
     });
   }
 
@@ -60,14 +96,14 @@ const update = async (req, res) => {
   } catch (err) {
     return res.status(500).json({
       status: 500,
-      message: "Something went wrong. Please try again",
+      message: 'Something went wrong. Please try again',
     });
   }
 };
 
-const addImg = async ( req, res ) => {
+const addImg = async (req, res) => {
   const userId = req.user;
-  
+
   try {
     const updatedUser = await User.findByIdAndUpdate(
       userId,
@@ -90,7 +126,7 @@ const addImg = async ( req, res ) => {
     console.log(error);
     return res.status(500).json({
       status: 500,
-      message: "Something went wrong. Please try again",
+      message: 'Something went wrong. Please try again',
     });
   }
 };
@@ -107,12 +143,12 @@ const destroy = async (req, res) => {
     return res.status(200).json({
       status: 200,
       data: deletedUser,
-      message: "success",
+      message: 'success',
     });
   } catch (err) {
     return res.status(500).json({
       status: 500,
-      message: "Something went wrong. Please try again",
+      message: 'Something went wrong. Please try again',
     });
   }
 };
