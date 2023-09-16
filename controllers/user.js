@@ -13,7 +13,7 @@ const profile = async (req, res) => {
       job_status: 'applied',
     });
 
-    const complete = await Job.countDocuments({
+    const completed = await Job.countDocuments({
       user: userId,
       job_status: 'completed',
     });
@@ -34,11 +34,26 @@ const profile = async (req, res) => {
     });
 
     const progress = [
-      { complete },
-      { in_progress },
-      { no_response },
-      { rejected },
-      { applied },
+      {
+        label: 'completed',
+        count: completed,
+      },
+      {
+        label: 'in_progress',
+        count: in_progress,
+      },
+      {
+        label: 'no_response',
+        count: no_response,
+      },
+      {
+        label: 'rejected',
+        count: rejected,
+      },
+      {
+        label: 'applied',
+        count: applied,
+      },
     ];
 
     res.status(200).json({
