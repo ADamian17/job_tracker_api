@@ -45,11 +45,15 @@ const createUser = async (req, res) => {
       profession,
     };
 
-    await User.create(newUser);
+    const createdUser = await User.create(newUser);
 
     return res.status(201).json({
       status: 201,
       message: 'User created',
+      user: {
+        email: createdUser.email,
+        password: createdUser.password,
+      },
       requestedAt: new Date().toLocaleString(),
     });
   } catch (err) {
@@ -95,7 +99,6 @@ const login = async (req, res) => {
           expiresIn: '10h',
         }
       );
-
       return res.status(200).json({
         status: 200,
         message: 'Success',
